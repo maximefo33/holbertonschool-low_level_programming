@@ -8,16 +8,16 @@
 
 int main(void)
 {
-    char lettre = 'a';
-    char lettre2 = 'A';
+	char lettre = 'a';
+	char lettre2 = 'A';
 
-    while (lettre <= 'z' || lettre2 <= 'Z')
-    {
-        putchar(lettre);
-        putchar(lettre2);
-        lettre++;
-        lettre2++;
-    }
-    putchar('\n');
-    return (0);
+	while (lettre <= 'z' || lettre2 <= 'Z')
+	{
+		putchar(lettre);
+		putchar(lettre2);
+		lettre++;
+		lettre2++;
+	}
+	putchar('\n');
+	return (0);
 }
