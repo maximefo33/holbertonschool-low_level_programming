@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int n = (rand() % 101) - 50;
-
 int main(void)
 {
+
+	int n = rand();
+
 	if (n > 0)
 	{
 		printf("%d is positive\n", n);
