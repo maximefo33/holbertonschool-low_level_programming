@@ -23,15 +23,17 @@ int main(void)
 	{
 		printf("Last digit of %d is %d and is 0\n", n, N);
 	}
-	/* 2. On filtre les nombres strictement supérieurs à 5 (ex: 6, 7, 8, 9) */
+	/* 2. On filtre les nombres strictement supérieurs à 5 */
 	else if (N > 5)
 	{
 		printf("Last digit of %d is %d and is greater than 5\n", n, N);
 	}
-	/* 3. Tout le reste entre ici automatiquement (1 à 4 ET tous les négatifs comme -8) */
+	/* 3. Tout le reste entre ici automatiquement (y compris les négatifs) */
 	else
 	{
-		printf("Last digit of %d is %d and is less than 6 and not 0\n", n, N);
+		printf("Last digit of %d is %d and is less than 6 "
+		       "and not 0\n",
+		       n, N);
 	}
 
 	return (0);
