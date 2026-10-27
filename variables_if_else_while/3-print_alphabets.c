@@ -11,11 +11,16 @@ int main(void)
 	char lettre = 'a';
 	char lettre2 = 'A';
 
-	while (lettre <= 'z' || lettre2 <= 'Z')
+	while (lettre <= 'z')
 	{
 		putchar(lettre);
-		putchar(lettre2);
 		lettre++;
+	}
+	while (lettre2 <= 'Z')
+	{
+
+		putchar(lettre2);
+
 		lettre2++;
 	}
 	putchar('\n');
