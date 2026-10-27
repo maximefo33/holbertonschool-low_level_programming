@@ -9,5 +9,7 @@ int main(void)
         putchar(lettre);
         lettre++;
     }
+    // ... ton while et ton deuxième putchar ...
     putchar('\n');
+    return (0);
 }
