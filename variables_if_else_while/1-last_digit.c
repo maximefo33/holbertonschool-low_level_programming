@@ -15,27 +15,22 @@ int main(void)
 	srand(time(0));
 	n = rand() - RAND_MAX / 2;
 
-	/* On récupère le dernier chiffre */
+	/* N récupère le dernier chiffre (garde son signe - s'il existe) */
 	N = n % 10;
 
-	/* Si le dernier chiffre est négatif, on le rend positif */
-	if (N < 0)
-	{
-		N = -N;
-	}
-
-	/* Gestion des conditions sans utiliser l'opérateur && */
-	if (N > 5)
-	{
-		printf("Last digit of %d is %d and is greater than 5\n", n, N);
-	}
-	else if (N == 0)
+	/* 1. On filtre d'abord le zéro */
+	if (N == 0)
 	{
 		printf("Last digit of %d is %d and is 0\n", n, N);
 	}
+	/* 2. On filtre les nombres strictement supérieurs à 5 (ex: 6, 7, 8, 9) */
+	else if (N > 5)
+	{
+		printf("Last digit of %d is %d and is greater than 5\n", n, N);
+	}
+	/* 3. Tout le reste entre ici automatiquement (1 à 4 ET tous les négatifs comme -8) */
 	else
 	{
-		/* Ici, N est obligatoirement inférieur à 6 et différent de 0 */
 		printf("Last digit of %d is %d and is less than 6 and not 0\n", n, N);
 	}
 
