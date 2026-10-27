@@ -2,14 +2,13 @@
 
 int main(void)
 {
-    char lettre = 'a';
+	char lettre = 'a';
 
-    while (lettre <= 'z')
-    {
-        putchar(lettre);
-        lettre++;
-    }
-    // ... ton while et ton deuxième putchar ...
-    putchar('\n');
-    return (0);
+	while (lettre <= 'z')
+	{
+		putchar(lettre);
+		lettre++;
+	}
+	putchar('\n');
+	return (0);
 }
