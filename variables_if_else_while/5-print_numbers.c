@@ -8,13 +8,13 @@
 
 int main(void)
 {
-    char symbole = '0';
+	char symbole = '0';
 
-    while (symbole <= '9')
-    {
-        putchar(symbole);
-        symbole++;
-    }
-    putchar('\n');
-    return (0);
+	while (symbole <= '9')
+	{
+		putchar(symbole);
+		symbole++;
+	}
+	putchar('\n');
+	return (0);
 }
