@@ -30,7 +30,7 @@ void times_table(void)
 			if (conteur < 9)
 			{
 				_putchar(',');
-				_putchar('  ');
+				_putchar(' ');
 			}
 		}
 		_putchar('\n');
