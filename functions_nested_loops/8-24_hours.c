@@ -23,6 +23,8 @@ void jack_bauer(void)
 
 			int minut = minute / 10;
 			int second = minute % 10;
+			_putchar(dizaine + '0');
+			_putchar(unite + '0');
 			_putchar(':');
 			_putchar(minut + '0');
 			_putchar(second + '0');
