@@ -12,6 +12,7 @@ void jack_bauer(void)
 
 	for (heure = 0; heure <= 23; heure++)
 	{
+
 		int unite = heure % 10;
 		int dizaine = heure / 10;
 		_putchar(dizaine + '0');
@@ -25,7 +26,8 @@ void jack_bauer(void)
 			int second = minute % 10;
 			_putchar(minut + '0');
 			_putchar(second + '0');
-				}
-		_putchar('\n');
+			_putchar('\n');
+		}
 	}
+	_putchar('\n');
 }
