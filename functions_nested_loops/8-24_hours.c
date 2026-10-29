@@ -18,6 +18,7 @@ void jack_bauer(void)
 		_putchar(dizaine + '0');
 		_putchar(unite + '0');
 		_putchar(':');
+		_putchar('\n');
 
 		for (minute = 0; minute <= 59; minute++)
 		{
@@ -26,8 +27,6 @@ void jack_bauer(void)
 			int second = minute % 10;
 			_putchar(minut + '0');
 			_putchar(second + '0');
-			_putchar('\n');
 		}
-		_putchar('\n');
 	}
 }
