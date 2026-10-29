@@ -27,8 +27,11 @@ void times_table(void)
 				_putchar(dizaine + '0');
 			}
 			_putchar(unite + '0');
-			_putchar(',');
-			_putchar(' ');
+			if (conteur < 9)
+			{
+				_putchar(',');
+				_putchar(' ');
+			}
 		}
 		_putchar('\n');
 	}
