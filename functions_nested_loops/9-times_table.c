@@ -30,6 +30,11 @@ void times_table(void)
 			if (conteur < 9)
 			{
 				_putchar(',');
+				if (resulta < 10)
+				{
+					_putchar(' ');
+				}
+
 				_putchar(' ');
 			}
 		}
