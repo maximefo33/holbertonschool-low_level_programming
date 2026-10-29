@@ -9,13 +9,11 @@ void jack_bauer(void)
 {
 	int heure;
 	int minute;
-
 	for (heure = 0; heure <= 23; heure++)
 	{
 
 		int unite = heure % 10;
 		int dizaine = heure / 10;
-
 		for (minute = 0; minute <= 59; minute++)
 		{
 
