@@ -25,7 +25,7 @@ void jack_bauer(void)
 			int second = minute % 10;
 			_putchar(minut + '0');
 			_putchar(second + '0');
-			_putchar('\n');
-		}
+				}
+		_putchar('\n');
 	}
 }
