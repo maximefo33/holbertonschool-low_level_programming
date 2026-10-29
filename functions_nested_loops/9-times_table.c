@@ -9,33 +9,32 @@ void times_table(void)
 {
 	int conteur;
 	int i;
+	int resulta;
 
 	for (i = 0; i <= 9; i++)
 	{
-		for (conteur = 0; conteur < 10; conteur++)
+		for (conteur = 0; conteur <= 9; conteur++)
 		{
-			int resulta;
-			int unite;
-			int dizaine;
-
 			resulta = i * conteur;
-			unite = resulta % 10;
-			dizaine = resulta / 10;
 
-			if (resulta >= 10)
+			if (conteur == 0)
 			{
-				_putchar(dizaine + '0');
+				_putchar(resulta + '0');
 			}
-			_putchar(unite + '0');
-			if (conteur < 9)
+			else
 			{
 				_putchar(',');
+				_putchar(' ');
 				if (resulta < 10)
 				{
 					_putchar(' ');
+					_putchar(resulta + '0');
 				}
-
-				_putchar(' ');
+				else
+				{
+					_putchar((resulta / 10) + '0');
+					_putchar((resulta % 10) + '0');
+				}
 			}
 		}
 		_putchar('\n');
