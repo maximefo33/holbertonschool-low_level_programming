@@ -27,7 +27,7 @@ void times_table(void)
 				_putchar(dizaine + '0');
 			}
 			_putchar(unite + '0');
-			_putchar('\n');
-		}
+				}
+		_putchar('\n');
 	}
 }
