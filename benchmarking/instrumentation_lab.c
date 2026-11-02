@@ -52,44 +52,51 @@ static unsigned long reduce_checksum(void)
 
 int main(void)
 {
-	clock_t start_total, end_total;
-	clock_t start_build, end_build;
-	clock_t start_process, end_process;
-	clock_t start_reduce, end_reduce;
-
 	unsigned long checksum;
 
-	// Début de la mesure globale
-	start_total = clock();
+	/* Students must add clock-based timing and print required lines. */
 
-	// Phase 1 : Build
-	start_build = clock();
+	clock_t start;
+	clock_t end;
+	double elapsed_a;
+	double elapsed_b;
+	double elapsed_c;
+	clock_t total_start;
+	clock_t total_end;
+	double total_global;
+	total_start = clock();
+
+	start = clock();
 	build_dataset();
-	end_build = clock();
+	end = clock();
+	elapsed_a = (double)(end - start) / (double)CLOCKS_PER_SEC;
 
-	// Phase 2 : Process
-	start_process = clock();
+	start = clock();
 	process_dataset();
-	end_process = clock();
+	end = clock();
+	elapsed_b = (double)(end - start) / (double)CLOCKS_PER_SEC;
 
-	// Phase 3 : Reduce
-	start_reduce = clock();
+	start = clock();
 	checksum = reduce_checksum();
-	end_reduce = clock();
+	end = clock();
+	elapsed_c = (double)(end - start) / (double)CLOCKS_PER_SEC;
 
-	// Fin de la mesure globale
-	end_total = clock();
+	total_end = clock();
+	total_global = total_end - total_start;
 
 	if (checksum == 0ul)
-	{
 		printf("impossible\n");
-	}
 
-	// Affichage strict selon le contrat de sortie requis
-	printf("TOTAL: %f seconds\n", (double)(end_total - start_total) / CLOCKS_PER_SEC);
-	printf("BUILD_DATA: %f seconds\n", (double)(end_build - start_build) / CLOCKS_PER_SEC);
-	printf("PROCESS: %f seconds\n", (double)(end_process - start_process) / CLOCKS_PER_SEC);
-	printf("REDUCE: %f seconds\n", (double)(end_reduce - start_reduce) / CLOCKS_PER_SEC);
+	printf("TOTAL: %.6f  seconds\n", (double)(total_global) / CLOCKS_PER_SEC);
+	printf("BUILD_DATA: %.6f seconds\n", (double)(elapsed_a));
+	printf("PROCESS: %.6f  seconds\n", (double)(elapsed_b));
+	printf("REDUCE: %.6f  seconds\n", (double)(elapsed_c));
+	/* Required output (exact format, no extra lines):
+	 * TOTAL seconds: <float>
+	 * BUILD_DATA seconds: <float>
+	 * PROCESS seconds: <float>
+	 * REDUCE seconds: <float>
+	 */
 
 	return 0;
 }
