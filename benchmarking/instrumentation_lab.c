@@ -84,13 +84,10 @@ int main(void)
 	total_end = clock();
 	total_global = total_end - total_start;
 
-	if (checksum == 0ul)
-		printf("impossible\n");
-
-	printf("TOTAL: %.6f  seconds\n", (double)(total_global) / CLOCKS_PER_SEC);
-	printf("BUILD_DATA: %.6f seconds\n", (double)(elapsed_a));
-	printf("PROCESS: %.6f  seconds\n", (double)(elapsed_b));
-	printf("REDUCE: %.6f  seconds\n", (double)(elapsed_c));
+	printf("TOTAL seconds:%.6f \n", (double)(total_global) / CLOCKS_PER_SEC);
+	printf("BUILD_DATA seconds:%.6f \n", (double)(elapsed_a));
+	printf("PROCESS seconds:%.6f\n", (double)(elapsed_b));
+	printf("REDUCE seconds:%.6f\n", (double)(elapsed_c));
 	/* Required output (exact format, no extra lines):
 	 * TOTAL seconds: <float>
 	 * BUILD_DATA seconds: <float>
