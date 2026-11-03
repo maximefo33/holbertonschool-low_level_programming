@@ -2,10 +2,10 @@
 #include <stdio.h>
 
 /**
- * reset_to_98 - Changes the value of the integer pointed to by n to 98.
- * @n: Pointer to the integer variable to be modified.
+ * _strlen - Counts the number of characters in a string.
+ * @s: Pointer to the string to be measured.
  *
- * Return: Nothing.
+ * Return: The number of characters in the string.
  */
 
 int _strlen(char *s)
