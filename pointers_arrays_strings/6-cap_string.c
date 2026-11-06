@@ -1,5 +1,12 @@
 #include <stddef.h>
 
+/**
+ * cap_string - Capitalizes the first letter of each word in a string.
+ * @str: Pointer to the string to capitalize.
+ *
+ * Return: A pointer to the modified string.
+ */
+
 char *cap_string(char *str)
 {
 	int i = 0;
