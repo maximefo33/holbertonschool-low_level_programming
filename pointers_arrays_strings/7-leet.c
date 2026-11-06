@@ -1,6 +1,6 @@
 /**
  * leet - Encodes a string into 1337.
- * @str: Pointer to the string to encode.
+ * @s: Pointer to the string to encode.
  *
  * Return: A pointer to the modified string.
  */
