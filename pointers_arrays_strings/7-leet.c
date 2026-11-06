@@ -14,12 +14,12 @@ char *leet(char *s)
 	char *l;
 	char *n;
 
-	while (*s = !'\0')
+	while (*s != '\0')
 	{
 		l = letters;
 		n = numbers;
 
-		while (*l = !'\0')
+		while (*l != '\0')
 		{
 			if (*s == *l)
 			{
