@@ -10,17 +10,17 @@
  */
 void free_grid(int **grid, int height)
 {
-    int i;
+	int i;
 
-    if (grid == NULL || height <= 0)
-        return;
+	if (grid == NULL || height <= 0)
+		return;
 
-    /* On libère chaque ligne une par une */
-    for (i = 0; i < height; i++)
-    {
-        free(grid[i]);
-    }
+	/* On libère chaque ligne une par une */
+	for (i = 0; i < height; i++)
+	{
+		free(grid[i]);
+	}
 
-    /* On libère le tableau de pointeurs principal */
-    free(grid);
+	/* On libère le tableau de pointeurs principal */
+	free(grid);
 }
