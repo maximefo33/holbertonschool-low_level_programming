@@ -10,6 +10,19 @@
  * Return: Always 0 (Success).
  */
 
+void addition(void)
+{
+	int a = 0;
+	int b = 0;
+	int resultat;
+	printf("Saisissez le premier chiffre a additionner:\n ");
+	scanf("%d", &a);
+	printf("Saisissez le deuxième  chiffre a additionner:\n ");
+	scanf("%d", &b);
+	resultat = a + b;
+	printf("Result:%d\n", resultat);
+}
+
 void soustraction(void)
 {
 	int a = 0;
@@ -23,16 +36,29 @@ void soustraction(void)
 	printf("Result:%d\n", resultat);
 }
 
-void addition(void)
+void multiplication(void)
 {
 	int a = 0;
 	int b = 0;
 	int resultat;
-	printf("Saisissez le premier chiffre a additionner:\n ");
+	printf("Saisissez le premier chiffre a multiplication:\n ");
 	scanf("%d", &a);
-	printf("Saisissez le deuxième  chiffre a additionner:\n ");
+	printf("Saisissez le deuxième  chiffre a multiplication:\n ");
 	scanf("%d", &b);
-	resultat = a + b;
+	resultat = a * b;
+	printf("Result:%d\n", resultat);
+}
+
+void division(void)
+{
+	int a = 0;
+	int b = 0;
+	int resultat;
+	printf("Saisissez le premier chiffre a division:\n ");
+	scanf("%d", &a);
+	printf("Saisissez le deuxième  chiffre a division:\n ");
+	scanf("%d", &b);
+	resultat = a / b;
 	printf("Result:%d\n", resultat);
 }
 
@@ -61,6 +87,16 @@ int main(void)
 		{
 
 			soustraction();
+		}
+		else if (chois == 3)
+		{
+
+			multiplication();
+		}
+		else if (chois == 4)
+		{
+
+			division();
 		}
 
 		else
