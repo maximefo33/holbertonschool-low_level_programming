@@ -20,10 +20,19 @@ int main(void)
 		printf("Simple Calculator\n ");
 		printf("1) Add\n 2) Subtract\n 3) Multiply\n 4) Divide\n 0) Quit\n");
 		printf("Choice: : ");
-		if (scanf("%d", &chois) == 1)
+		scanf("%d", &chois);
+		if (chois == 0)
 		{
-			printf("Bye!");
+			printf("Bye!\n");
 		}
+		else if (chois >= 1 && chois <= 4)
+		{
+		}
+		else
+		{
+			printf("Invalid choice");
+		}
+
 	} while (chois != 0);
 	return 0;
 }
