@@ -10,6 +10,19 @@
  * Return: Always 0 (Success).
  */
 
+void addition(void)
+{
+	int a = 0;
+	int b = 0;
+	int resultat;
+	printf("Saisissez le premier chiffre a additionner:\n ");
+	scanf("%d", &a);
+	printf("Saisissez le deuxième  chiffre a additionner:\n ");
+	scanf("%d", &b);
+	resultat = a + b;
+	printf("Result:%d\n", resultat);
+}
+
 int main(void)
 {
 	int chois = 0;
@@ -25,9 +38,13 @@ int main(void)
 		{
 			printf("Bye!\n");
 		}
-		else if (chois >= 1 && chois <= 4)
+
+		else if (chois == 1)
 		{
+
+			addition();
 		}
+
 		else
 		{
 			printf("Invalid choice");
