@@ -1,12 +1,11 @@
 void print_name(char *name, void (*f)(char *))
-{
-	/**
-	 * print_name - prints a name using a given function
-	 * @name: name to be passed to the function
-	 * @f: pointer to the function that prints the name
-	 *
-	 * Return: Nothing.
-	 */
+{ /**
+   * print_name - executes a function to print a name
+   * @name: the name to be printed
+   * @f: pointer to the function used to print the name
+   *
+   * Return: Nothing.
+   */
 
-		f(name);
+	f(name);
 }
