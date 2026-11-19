@@ -1,6 +1,7 @@
 ## Observed Performance Differences
 
-Based on the two executions, all four measurements returned the same displayed value: 0.000000 seconds. This includes the total execution time and the individual execution times of `BUILD_DATA`, `PROCESS`, and `REDUCE`.
+Based on the two executions, all four measurements returned the same displayed value: 0.000000 seconds. This includes the total execution time and the individual execution times of 
+`BUILD_DATA`, `PROCESS`, and `REDUCE`.
 
 Based on these results, there is no visible performance difference between the three functions. However, this does not necessarily mean that they have no performance issues. The measured times are displayed as 0.000000 seconds, which means that the measurement precision is not sufficient to show any differences.
 
