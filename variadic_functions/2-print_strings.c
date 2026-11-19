@@ -2,9 +2,9 @@
 #include <stdarg.h>
 
 /**
- * print_numbers - prints integers separated by a given string
- * @separator: string printed between the numbers
- * @n: number of integers to print
+ * print_strings - prints strings separated by a given string
+ * @separator: string printed between the strings
+ * @n: number of strings to print
  */
 
 void print_strings(const char *separator, const unsigned int n, ...)
@@ -24,12 +24,20 @@ void print_strings(const char *separator, const unsigned int n, ...)
 	while (i < n)
 	{
 		data = va_arg(ap, char *);
+
 		if (i > 0 && separator != NULL)
 		{
 			printf("%s", separator);
 		}
-		printf("%s", data);
 
+		if (data != NULL)
+		{
+			printf("%s", data);
+		}
+		else if (data == NULL)
+		{
+			printf("(nil)");
+		}
 		i++;
 	}
 	printf("\n");
