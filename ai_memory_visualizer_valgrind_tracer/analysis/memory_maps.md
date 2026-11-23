@@ -1,399 +1,213 @@
-# Valgrind & AI Memory Tracer — Analysis
+# AI Memory Visualizer — Memory Maps
 
 ## 1. Project Overview
 
-### 1.1 Objective
+This project explores how memory is used and managed during C program execution.
 
-The objective of this analysis is to understand how Valgrind detects memory errors and how these diagnostics relate to actual memory behavior during C program execution.
+The objective is to understand the relationship between:
 
-The analysis focuses on:
+- Stack memory and function calls.
+- Recursive function calls and stack frames.
+- Automatic storage duration.
+- Dynamic memory allocation and deallocation.
+- Pointers and pointer aliasing.
+- Object lifetime.
+- Memory leaks and invalid memory accesses.
 
-- Memory leaks.
+The project uses small C programs to observe memory behavior, inspect source code, and analyze runtime results.
+
+Valgrind is used to detect memory management errors and examine their effects.
+
+## 2. Project Structure
+
+```text
+ai_memory_visualizer_valgrind_tracer/
+│
+├── README.md
+│
+├── analysis/
+│   ├── memory_maps.md
+│   ├── valgrind_analysis.md
+│   └── crash_report.md
+│
+└── programs/
+    ├── stack_example.c
+    ├── heap_example.c
+    ├── aliasing_example.c
+    ├── crash_example.c
+    └── Makefile
+```
+
+## 3. C Programs
+
+The project contains four C programs. Each one demonstrates a different aspect of memory behavior.
+
+### 3.1 stack_example.c — Stack Memory and Recursion
+
+This program demonstrates how function calls use automatic storage duration.
+
+It focuses on:
+
+- Recursive function calls.
+- Multiple active stack frames.
+- Function parameters and local variables.
+- Variable lifetime.
+- Memory address reuse.
+- The distinction between variables belonging to different functions.
+
+The program uses `walk_stack()` to create recursive calls and `dump_frame()` to display information about local variables.
+
+**Main objective:** Understand how recursive calls maintain separate local variables and how those variables cease to exist when their corresponding function calls return.
+
+### 3.2 heap_example.c — Dynamic Memory Allocation
+
+This program demonstrates dynamic memory allocation using `malloc()` and memory deallocation using `free()`.
+
+It focuses on:
+
+- Allocating structures dynamically.
+- Allocating memory for structure members.
+- Managing multiple heap allocations.
+- Correct memory ownership.
+- Releasing allocated memory.
+- Detecting memory leaks.
+
+The example illustrates how failing to release an allocated member can cause a memory leak, even when the structure containing its pointer is freed.
+
+**Main objective:** Understand how dynamically allocated memory is managed and why every allocation must be released correctly.
+
+### 3.3 aliasing_example.c — Pointer Aliasing and Use-After-Free
+
+This program demonstrates how two pointers can reference the same dynamically allocated memory block.
+
+It focuses on:
+
+- Dynamic memory allocation.
+- Pointer assignment.
+- Pointer aliasing.
+- Shared access to an allocation.
+- Memory deallocation.
+- Invalid memory accesses after `free()`.
+
+The program assigns the address stored in pointer `a` to pointer `b`. Both pointers therefore refer to the same allocation.
+
+After the allocation is released using `free(a)`, the program attempts to access the released memory through `b`.
+
+**Main objective:** Understand why copying a pointer does not create a new allocation and why accessing memory after deallocation is invalid.
+
+### 3.4 crash_example.c — NULL Pointer Dereference
+
+This program demonstrates an invalid memory access caused by attempting to write through a NULL pointer.
+
+It focuses on:
+
+- Pointer initialization.
+- Conditional memory allocation.
+- Allocation failure or early return.
+- NULL pointer handling.
+- Invalid memory writes.
+- Runtime crashes.
+
+The allocation function returns `NULL` when the requested size is zero. The calling function subsequently attempts to access the returned pointer without checking whether it is valid.
+
+**Main objective:** Understand why a pointer must be checked before dereferencing it and how an invalid memory access can cause a program to crash.
+
+## 4. Compilation and Execution
+
+The programs can be compiled individually or using the provided Makefile.
+
+### 4.1 Compilation
+
+From the `programs/` directory, use:
+
+```bash
+make
+```
+
+Alternatively, compile an individual program with GCC:
+
+```bash
+gcc -Wall -Wextra -Werror -pedantic -std=gnu89 -g \
+    stack_example.c -o stack_example
+```
+
+Repeat the compilation command for the other source files when needed.
+
+The `-g` option includes debugging information, which helps identify source locations during memory analysis.
+
+### 4.2 Execution
+
+Run the programs individually:
+
+```bash
+./stack_example
+./heap_example
+./aliasing_example
+./crash_example
+```
+
+**Important:** `crash_example` is intentionally designed to perform an invalid memory access. Its abnormal termination is part of the exercise.
+
+## 5. Memory Analysis with Valgrind
+
+Valgrind is used to inspect memory behavior during program execution.
+
+The Memcheck tool can help identify:
+
 - Invalid memory reads.
 - Invalid memory writes.
-- Use-after-free errors.
-- Uninitialized memory usage.
-- Memory allocation and deallocation.
-- Pointer ownership and lifetime.
+- Use of uninitialized values.
+- Memory leaks.
+- Accesses to memory after it has been freed.
 
-Valgrind output is analyzed alongside the source code and the memory maps created in Task 0.
+Example command:
 
-AI-generated explanations are treated as hypotheses and are independently checked against the program source code and Valgrind documentation.
+```bash
+valgrind --leak-check=full --show-leak-kinds=all \
+    ./stack_example
+```
 
-### 1.2 Environment
+The same approach can be used with the other executables.
 
-- Development environment: GitHub Codespaces
-- Operating system: Linux
-- Compiler: GCC
-- Valgrind version: 3.22.0
-- Tool used: Memcheck
-- Compilation flags:
+For the crash example:
 
-  `-Wall -Wextra -Werror -pedantic -std=gnu89 -g`
+```bash
+valgrind --leak-check=full --show-leak-kinds=all \
+    ./crash_example
+```
 
-The Makefile compilation initially stopped at `aliasing_example.c` because GCC detected use-after-free warnings and `-Werror` converted these warnings into compilation errors.
+The crash is expected. The purpose of the analysis is to identify the invalid access and understand its cause.
 
-To preserve the intentional memory errors, `aliasing_example.c` was compiled separately without `-Werror`.
+## 6. Analysis Documents
 
-The original source code was not modified.
+The `analysis/` directory contains the written observations and conclusions.
 
-### 1.3 Valgrind Command
+| File | Purpose |
+|---|---|
+| `memory_maps.md` | Analysis of stack memory, heap memory, pointer aliasing and object lifetimes. |
+| `valgrind_analysis.md` | Examination of Valgrind results for the four C programs. |
+| `crash_report.md` | Detailed analysis of the NULL pointer dereference and resulting crash. |
 
-The following command was used to analyze `aliasing_example`:
+These documents connect the source code, memory concepts and observed runtime behavior.
 
-    valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes ./aliasing_example
+## 7. Learning Objectives
 
-The command enables:
+By completing this project, the main learning objectives are to:
 
-- Memcheck for detecting invalid memory accesses.
-- Full leak checking.
-- Reporting of all leak categories.
-- Tracking of origins for uninitialized values.
+- Understand the difference between stack and heap memory.
+- Identify the lifetime of automatic and dynamically allocated objects.
+- Understand how recursive function calls create separate active function frames.
+- Distinguish a pointer variable from the memory it references.
+- Understand pointer aliasing and shared access to memory.
+- Identify use-after-free errors and invalid memory accesses.
+- Understand the importance of checking pointers before dereferencing them.
+- Interpret Valgrind reports to identify memory management problems.
+- Critically evaluate AI-generated explanations by comparing them with source code and execution results.
 
----
+## 8. Conclusion
 
-## 2. Execution Overview
+This project provides practical examples of memory behavior in C.
 
-### 2.1 Compilation Status
+By examining stack frames, dynamic allocations, pointer aliasing and invalid memory accesses, it demonstrates how memory lifetime and pointer management affect program correctness.
 
-| Program | Compilation status | Valgrind status |
-|---|---|---|
-| stack_example.c | Compiled with Makefile | Pending |
-| heap_example.c | Compiled with Makefile | Pending |
-| aliasing_example.c | Compiled manually without -Werror | Executed |
-| crash_example.c | Not yet compiled | Pending |
-
-### 2.2 Current Valgrind Results
-
-The following table summarizes the analysis completed so far.
-
-| Program | Detected problems | Memory leaks |
-|---|---|---|
-| stack_example | Not yet analyzed | Not yet checked |
-| heap_example | Not yet analyzed | Not yet checked |
-| aliasing_example | 3 invalid memory accesses | None detected |
-| crash_example | Not yet analyzed | Not yet checked |
-
-Only the results obtained from actual executions are considered confirmed.
-
----
-
-## 3. Aliasing Example Analysis
-
-### 3.1 Program Overview
-
-File: `programs/aliasing_example.c`
-
-The program demonstrates:
-
-- Dynamic memory allocation using `malloc()`.
-- Two pointers referencing the same allocation.
-- Memory deallocation using `free()`.
-- Invalid memory accesses after deallocation.
-
-The `make_numbers()` function allocates memory for five integers and initializes the array.
-
-The resulting values are:
-
-| Index | Value |
-|---|---:|
-| 0 | 0 |
-| 1 | 11 |
-| 2 | 22 |
-| 3 | 33 |
-| 4 | 44 |
-
-### 3.2 Pointer Aliasing and Memory Ownership
-
-The allocation is performed inside `make_numbers()`:
-
-    arr = (int *)malloc((size_t)n * sizeof(int));
-
-The allocation reserves 20 bytes on the heap because the array contains five integers of four bytes each in the observed environment.
-
-The function returns the pointer:
-
-    return arr;
-
-When `make_numbers()` returns, its local variable `arr` ceases to exist, but the dynamically allocated memory remains allocated.
-
-The address is received by `main()`:
-
-    a = make_numbers(n);
-
-A second pointer is then assigned the same address:
-
-    b = a;
-
-This assignment copies the pointer value, not the contents of the array.
-
-Both pointers therefore refer to the same heap allocation.
-
-Before deallocation, modifying the array through one pointer is visible through the other pointer.
-
-For example:
-
-    b[3] = 1234;
-
-The value can also be accessed through `a[3]` because both pointers refer to the same array.
-
-### 3.3 Valgrind Invalid Memory Accesses
-
-Valgrind 3.22.0 detected three memory errors during the execution.
-
-All three errors are associated with the same allocation.
-
-The allocation was created at:
-
-- `aliasing_example.c:12` — `malloc()`.
-- `aliasing_example.c:30` — `make_numbers()` called from `main()`.
-
-The allocation was released at:
-
-- `aliasing_example.c:38` — `free(a)`.
-
-After this deallocation, the program attempts to use the old allocation through pointer `b`.
-
-#### Error 1: Invalid Read
-
-Valgrind reported:
-
-    Invalid read of size 4
-    at main (aliasing_example.c:42)
-
-The invalid access occurs at:
-
-    printf("  reading b[2]=%d\n", b[2]);
-
-The address reported by Valgrind is 8 bytes inside a block of size 20 that has already been freed.
-
-The offset corresponds to index 2 because each integer occupies four bytes in the observed environment.
-
-The program attempts to read `b[2]` after the heap allocation has been released.
-
-This is a use-after-free error.
-
-#### Error 2: Invalid Write
-
-Valgrind reported:
-
-    Invalid write of size 4
-    at main (aliasing_example.c:44)
-
-The invalid access occurs at:
-
-    b[3] = 1234;
-
-The address is 12 bytes inside the previously allocated block of 20 bytes.
-
-The offset corresponds to index 3.
-
-The program attempts to modify the fourth array element after the allocation has been freed.
-
-This is an invalid write caused by use-after-free.
-
-#### Error 3: Invalid Read
-
-Valgrind reported:
-
-    Invalid read of size 4
-    at main (aliasing_example.c:45)
-
-The invalid access occurs at:
-
-    printf("  wrote b[3]=%d\n", b[3]);
-
-The program attempts to read `b[3]` after the invalid write.
-
-The address is again 12 bytes inside the previously freed block.
-
-The memory access is invalid because the allocation's lifetime has already ended.
-
-This is another use-after-free error.
-
-### 3.4 Summary of Invalid Accesses
-
-| Source line | Operation | Valgrind diagnostic | Explanation |
-|---|---|---|---|
-| 42 | Read `b[2]` | Invalid read of size 4 | Reads from freed memory. |
-| 44 | Write `b[3]` | Invalid write of size 4 | Writes to freed memory. |
-| 45 | Read `b[3]` | Invalid read of size 4 | Reads from freed memory after the invalid write. |
-
-All three diagnostics refer to the same 20-byte heap allocation.
-
-### 3.5 Pointer Value After Deallocation
-
-The source code also contains:
-
-    printf("  after free(a): b=%p (dangling)\n", (void *)b);
-
-GCC reported a use-after-free warning for this instruction during compilation.
-
-However, Valgrind Memcheck did not report this line as an invalid heap read in the captured execution.
-
-This distinction is important.
-
-The C11 standard states that the value of a pointer becomes indeterminate when the object it points to reaches the end of its lifetime.
-
-Therefore, evaluating this old pointer value is not a valid operation according to the C abstract machine.
-
-However, the `printf()` instruction does not dereference the freed heap allocation.
-
-Memcheck reports the invalid heap accesses that it actually detects. It did not report line 40 in this execution.
-
-The absence of a Valgrind diagnostic does not mean that the operation is valid according to the C language rules.
-
-### 3.6 Heap Summary and Memory Leaks
-
-The second recorded execution produced the following summary:
-
-    HEAP SUMMARY:
-        in use at exit: 0 bytes in 0 blocks
-        total heap usage: 2 allocs, 2 frees, 4,116 bytes allocated
-
-    All heap blocks were freed -- no leaks are possible
-
-    ERROR SUMMARY: 3 errors from 3 contexts
-    (suppressed: 0 from 0)
-
-The results show:
-
-- Two allocations were recorded.
-- Two corresponding deallocations were recorded.
-- No heap blocks remained allocated at program termination.
-- Three invalid memory access contexts were detected.
-
-The total heap usage was 4,116 bytes in this execution. The actual array allocation was 20 bytes.
-
-An earlier execution reported a different total number of allocated bytes, but the same number of allocations and deallocations, no remaining heap blocks, and three error contexts.
-
-The important conclusion is that the program does not produce a memory leak in this analysis.
-
-The allocation is explicitly released with `free(a)`.
-
-The problem is the subsequent access to the released memory through the old pointer values.
-
-A memory leak and a use-after-free are two different categories of memory error.
-
----
-
-## 4. Other Program Analyses
-
-### 4.1 Stack Example
-
-File: `programs/stack_example.c`
-
-Valgrind execution: Not yet performed.
-
-The normal execution was previously tested in Task 0.
-
-The program uses recursive calls and automatic local variables but does not explicitly allocate dynamic memory with `malloc()`.
-
-The Valgrind report must still be collected to verify whether Memcheck reports any memory errors or leaks.
-
-No Valgrind diagnostic is claimed for this program at this stage.
-
-### 4.2 Heap Example
-
-File: `programs/heap_example.c`
-
-Valgrind execution: Not yet performed.
-
-The program must be analyzed to identify whether every dynamically allocated object is properly released.
-
-Particular attention must be given to the ownership of nested allocations and to the deallocation of dynamically allocated structure members.
-
-The actual Valgrind output is required before classifying any leak as definitely lost, indirectly lost, possibly lost or still reachable.
-
-No final leak classification is claimed at this stage.
-
-### 4.3 Crash Example
-
-File: `programs/crash_example.c`
-
-Valgrind execution: Not yet performed.
-
-The program must be executed under Memcheck to identify the invalid memory operation responsible for the crash.
-
-The exact invalid access, source line and associated memory state must be determined from the actual Valgrind report.
-
-No final crash diagnosis is claimed at this stage.
-
----
-
-## 5. Critical Review of AI-Generated Explanations
-
-### 5.1 Identified AI Inaccuracy
-
-During the analysis, the AI explanation initially grouped the pointer display at line 40 with the invalid heap accesses detected by Valgrind.
-
-However, the actual Memcheck report did not contain an invalid read or invalid write at line 40.
-
-It reported three errors:
-
-- Invalid read at line 42.
-- Invalid write at line 44.
-- Invalid read at line 45.
-
-### 5.2 Why the Explanation Was Incomplete
-
-The initial explanation did not sufficiently distinguish between:
-
-- A pointer value becoming indeterminate according to the C standard.
-- An actual invalid read or write of a memory address detected by Valgrind.
-
-The C11 standard states that a pointer value becomes indeterminate when the object it points to reaches the end of its lifetime.
-
-However, the `printf()` instruction at line 40 does not dereference the old heap allocation.
-
-Memcheck therefore did not report it as an invalid heap-memory access in the recorded execution.
-
-### 5.3 Corrected Explanation
-
-The operation at line 40 remains problematic according to the C language rules because the pointer value is indeterminate after the allocation's lifetime ends.
-
-However, the actual Valgrind report only identifies invalid memory reads at lines 42 and 45 and an invalid memory write at line 44.
-
-These accesses directly attempt to read or modify the released heap allocation.
-
-The corrected explanation distinguishes a language-level lifetime violation from an invalid heap-memory access explicitly reported by Memcheck.
-
-### 5.4 Lessons Learned
-
-AI-generated explanations must be treated as hypotheses and checked against actual diagnostic output.
-
-During this analysis, the distinction between GCC warnings, C language rules and Valgrind reports was important.
-
-The source code and runtime evidence must be analyzed independently.
-
-A compiler warning does not necessarily correspond to an identical Valgrind diagnostic.
-
-Likewise, the absence of a Valgrind report does not prove that every operation in the program is valid according to the C standard.
-
-AI assistance is useful for organizing and interpreting memory errors, but the final explanation must be based on the program's actual behavior and the relevant technical documentation.
-
----
-
-## 6. Conclusion
-
-The analysis of `aliasing_example.c` demonstrated that pointer aliasing and memory ownership are important when working with dynamically allocated memory.
-
-The assignment `b = a` copies the pointer value rather than creating a second allocation.
-
-The call to `free(a)` releases the shared heap allocation.
-
-Subsequent attempts to read or modify the allocation through the old pointer values result in invalid memory accesses.
-
-Valgrind Memcheck detected three errors:
-
-- Two invalid reads.
-- One invalid write.
-
-No memory leak was detected because all recorded heap blocks were freed before program termination.
-
-The analysis also demonstrated the importance of distinguishing GCC warnings from Valgrind diagnostics and C language rules.
-
-The remaining programs must be executed under Valgrind before the project analysis can be considered complete.
-
----
-
+The combination of source code inspection, program execution and Valgrind analysis helps develop a more precise understanding of memory management in C.
